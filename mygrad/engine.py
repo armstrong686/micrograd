@@ -169,6 +169,33 @@ class Value:
 
         return out
 
+    def exp(self):
+        """
+        指数运算：
+
+        y = exp(x)
+        """
+
+        output_data = math.exp(self.data)
+
+        out = Value(
+            output_data,
+            (self,),
+            "exp"
+        )
+
+        def _backward():
+            # exp(x)的导数仍然是exp(x)
+            local_grad = out.data
+
+            self.grad += (
+                    local_grad * out.grad
+            )
+
+        out._backward = _backward
+
+        return out
+
     def backward(self):
         """从当前节点开始执行完整的反向传播"""
 
