@@ -71,3 +71,52 @@ python -m pytest
 ### License
 
 MIT
+
+
+---
+
+## MyGrad: Personal Reimplementation
+
+This fork retains Andrej Karpathy's original Micrograd implementation and adds my own reimplementation under the `mygrad/` package for learning automatic differentiation and neural network fundamentals.
+
+本仓库保留原始Micrograd代码，并在`mygrad/`目录中增加了我从零实现的自动求导引擎和神经网络模块。
+
+### Implemented Features
+
+- Scalar computation graph
+- Reverse-mode automatic differentiation
+- Topological graph traversal
+- Gradient accumulation
+- Addition, multiplication and power operations
+- ReLU activation
+- Sigmoid activation
+- Tanh activation
+- Exponential operation
+- Logarithm operation
+- Neuron, Layer and MLP modules
+- Gradient comparison with PyTorch
+- Automated tests with pytest
+- Moon dataset classification
+- Decision-boundary visualization
+
+### Project Structure
+
+```text
+micrograd/
+├── micrograd/                 # Original Micrograd implementation
+│   ├── engine.py
+│   └── nn.py
+├── mygrad/                    # Personal reimplementation
+│   ├── __init__.py
+│   ├── engine.py
+│   └── nn.py
+├── student_tests/             # Tests for MyGrad
+│   ├── test_mygrad_engine.py
+│   ├── test_mygrad_nn.py
+│   └── test_mygrad_activations.py
+├── examples/
+│   ├── train_moons.py
+│   └── moons_training_result.png
+├── playground.py
+├── nn_playground.py
+└── README.md
