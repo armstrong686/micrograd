@@ -1,3 +1,4 @@
+import math
 class Value:
     def __init__(self, data, _children=(), _op=""):
         # 当前节点保存的数值
@@ -97,6 +98,47 @@ class Value:
 
         return out
 
+    def sigmoid(self):
+        """
+        Sigmoid：
+
+        y = 1 / (1 + exp(-x))
+        """
+
+        # 分段计算，避免x绝对值很大时出现数值溢出
+        if self.data >= 0:
+            output_data = (
+                    1.0
+                    / (1.0 + math.exp(-self.data))
+            )
+        else:
+            exp_x = math.exp(self.data)
+
+            output_data = (
+                    exp_x
+                    / (1.0 + exp_x)
+            )
+
+        out = Value(
+            output_data,
+            (self,),
+            "sigmoid"
+        )
+
+        def _backward():
+            # Sigmoid导数：y * (1 - y)
+            local_grad = (
+                    out.data
+                    * (1.0 - out.data)
+            )
+
+            self.grad += (
+                    local_grad * out.grad
+            )
+
+        out._backward = _backward
+
+        return out
     def backward(self):
         """从当前节点开始执行完整的反向传播"""
 
