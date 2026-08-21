@@ -59,3 +59,28 @@ def test_gradient_accumulation():
 
     assert result.data == 12.0
     assert x.grad == 7.0
+
+import torch
+
+from mygrad.engine import Value
+
+
+def test_gradient_against_pytorch():
+    a = Value(2.0)
+    b = Value(-3.0)
+    c = Value(10.0)
+
+    output = (a * b + c).relu()
+    output.backward()
+
+    torch_a = torch.tensor(2.0, requires_grad=True)
+    torch_b = torch.tensor(-3.0, requires_grad=True)
+    torch_c = torch.tensor(10.0, requires_grad=True)
+
+    torch_output = torch.relu(torch_a * torch_b + torch_c)
+    torch_output.backward()
+
+    assert abs(output.data - torch_output.item()) < 1e-6
+    assert abs(a.grad - torch_a.grad.item()) < 1e-6
+    assert abs(b.grad - torch_b.grad.item()) < 1e-6
+    assert abs(c.grad - torch_c.grad.item()) < 1e-6
