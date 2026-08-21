@@ -139,6 +139,36 @@ class Value:
         out._backward = _backward
 
         return out
+
+    def tanh(self):
+        """
+        双曲正切：
+
+        y = tanh(x)
+        """
+
+        output_data = math.tanh(self.data)
+
+        out = Value(
+            output_data,
+            (self,),
+            "tanh"
+        )
+
+        def _backward():
+            # tanh导数：1 - y²
+            local_grad = (
+                    1.0 - out.data ** 2
+            )
+
+            self.grad += (
+                    local_grad * out.grad
+            )
+
+        out._backward = _backward
+
+        return out
+
     def backward(self):
         """从当前节点开始执行完整的反向传播"""
 
