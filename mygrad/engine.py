@@ -196,6 +196,39 @@ class Value:
 
         return out
 
+    def log(self):
+        """
+        自然对数：
+
+        y = log(x)
+
+        要求x必须大于0。
+        """
+
+        if self.data <= 0:
+            raise ValueError(
+                "log()的输入必须大于0"
+            )
+
+        output_data = math.log(self.data)
+
+        out = Value(
+            output_data,
+            (self,),
+            "log"
+        )
+
+        def _backward():
+            # log(x)的导数：1 / x
+            local_grad = 1.0 / self.data
+
+            self.grad += (
+                    local_grad * out.grad
+            )
+
+        out._backward = _backward
+
+        return out
     def backward(self):
         """从当前节点开始执行完整的反向传播"""
 
